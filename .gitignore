@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/VAN/v15
+/packages/Newtonsoft.Json.13.0.1/lib/net20/Newtonsoft.Json.dll
+/packages
+/VAN/bin
+/VAN/obj
