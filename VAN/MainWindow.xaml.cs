@@ -34,7 +34,7 @@ namespace VAN
             //  DispatcherTimer setup
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 15);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 10);
 
         }
 
@@ -73,12 +73,12 @@ namespace VAN
 
         private void stCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             disCombo.Items.Clear();
+            disCombo.Items.Clear();
 
             string stateId = ((System.Windows.UIElement)stCombo.SelectedItem).Uid;
 
 
-            var client = new RestClient("https://cdn-api.co-vin.in/api/v2/admin/location/districts/"+ stateId);
+            var client = new RestClient("https://cdn-api.co-vin.in/api/v2/admin/location/districts/" + stateId);
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
@@ -95,11 +95,11 @@ namespace VAN
                 disCombo.Items.Add(item);
             }
         }
-       
+
 
         void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            
+
             txb.Text = string.Empty;
             DateTime dtCurrent = DateTime.Now;
             string text = string.Empty;
@@ -107,9 +107,9 @@ namespace VAN
             _18ind.Fill = new SolidColorBrush(Colors.Red);
             _45ind.Fill = new SolidColorBrush(Colors.Red);
 
-            Dictionary<DateTime,string> centers = new Dictionary<DateTime,string>();
+            Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 dtCurrent.AddDays(i);
 
@@ -119,8 +119,8 @@ namespace VAN
                 client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36";
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);
-               
-                text += response.Content;               
+
+                text += response.Content;
             }
 
             txb.Text = text;
@@ -136,9 +136,17 @@ namespace VAN
                 Beep(5000, 1000);
                 Thread.Sleep(100);
             }
+
+           
             if (text.Contains("\"min_age_limit\": 45") || text.Contains("\"min_age_limit\":45"))
             {
                 _45ind.Fill = new SolidColorBrush(Colors.ForestGreen);
+
+                if (text.Contains("Only Armed"))
+                {
+                    _45ind.Fill = new SolidColorBrush(Colors.Orange);                    
+                }
+
             }
             if (text.StartsWith("<!DOCTYPE"))
             {
