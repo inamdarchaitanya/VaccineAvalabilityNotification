@@ -28,6 +28,7 @@ namespace VAN
     {
         DispatcherTimer dispatcherTimer;
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -41,15 +42,7 @@ namespace VAN
         [DllImport("kernel32.dll", EntryPoint = "Beep", SetLastError = true, ExactSpelling = true)]
         public static extern bool Beep(uint frequency, uint duration);
 
-        private void Start_Click(object sender, RoutedEventArgs e)
-        {
-            dispatcherTimer.Start();
-        }
-
-        private void Stop_Click(object sender, RoutedEventArgs e)
-        {
-            dispatcherTimer.Stop();
-        }
+       
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -99,8 +92,10 @@ namespace VAN
 
         void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-
-            txb.Text = string.Empty;
+            dg18.ItemsSource = null;
+            dg45.ItemsSource = null;
+            dg18.Items.Clear();
+            dg45.Items.Clear();
             DateTime dtCurrent = DateTime.Now;
             string text = string.Empty;
 
@@ -108,10 +103,11 @@ namespace VAN
             _45ind.Fill = new SolidColorBrush(Colors.Red);
 
             Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
-
-            for (int i = 0; i < 3; i++)
+            List<Session> listSession18 = new List<Session>();
+            List<Session> listSession45 = new List<Session>();
+            for (int i = 0; i < 2; i++)
             {
-                dtCurrent.AddDays(i);
+                dtCurrent = dtCurrent.AddDays(i);
 
                 var client = new RestClient("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + ((System.Windows.UIElement)disCombo.SelectedItem).Uid + "&date=" + dtCurrent.ToString("dd-MM-yyyy"));
                 client.Timeout = -1;
@@ -121,13 +117,23 @@ namespace VAN
                 Console.WriteLine(response.Content);
 
                 text += response.Content;
+                RootSession x = JsonConvert.DeserializeObject<RootSession>(response.Content);
+                foreach (var session in x.Sessions)
+                {
+                    if (session.min_age_limit == 18)
+                    {
+                        listSession18.Add(session);
+                    }
+                    else
+                    {
+                        listSession45.Add(session);
+                    }
+                }
             }
 
-            txb.Text = text;
-
-
-            if (text.Contains("\"min_age_limit\": 18") || text.Contains("\"min_age_limit\":18"))
+            if (listSession18.Count > 0)
             {
+                dg18.ItemsSource = listSession18;
                 _18ind.Fill = new SolidColorBrush(Colors.ForestGreen);
                 Beep(5000, 1000);
                 Thread.Sleep(100);
@@ -136,20 +142,21 @@ namespace VAN
                 Beep(5000, 1000);
                 Thread.Sleep(100);
             }
-
            
-            if (text.Contains("\"min_age_limit\": 45") || text.Contains("\"min_age_limit\":45"))
+            if (listSession45.Count > 0)
             {
+                dg45.ItemsSource = listSession45;
+
                 _45ind.Fill = new SolidColorBrush(Colors.ForestGreen);
 
                 if (text.Contains("Only Armed"))
                 {
                     _45ind.Fill = new SolidColorBrush(Colors.Orange);                    
                 }
-
             }
             if (text.StartsWith("<!DOCTYPE"))
             {
+                //Error too many requests sent.
                 Beep(2500, 3000);
                 Thread.Sleep(100);
             }
@@ -157,6 +164,18 @@ namespace VAN
             Beep(1000, 500);
             Thread.Sleep(50);
 
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if ((bool)MonitorChkBox.IsChecked)
+            {
+                dispatcherTimer.Start();
+            }
+            else
+            {
+                dispatcherTimer.Stop();
+            }
         }
     }
 }
