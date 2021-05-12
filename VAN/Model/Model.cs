@@ -39,6 +39,7 @@ namespace VAN.Model
     public class Session
     {
         public uint pincode { get; set; }
+        public string vaccine { get; set; }
         public int center_id { get; set; }
         public string name { get; set; }
         public string address { get; set; }
@@ -49,6 +50,8 @@ namespace VAN.Model
         public uint min_age_limit { get; set; }
         public uint available_capacity { get; set; }
         
+        
+
 
 
 
