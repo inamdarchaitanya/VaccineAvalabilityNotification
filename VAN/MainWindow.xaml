@@ -5,25 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VAN"
         mc:Ignorable="d"
-        Title="Vaccine Availability Notification" Height="743.224" Width="949" Loaded="Window_Loaded" MinWidth="485" MinHeight="560" ResizeMode="NoResize">
+        Title="Vaccine Availability Notification" Height="588.224" Width="1219" Loaded="Window_Loaded" MinWidth="485" MinHeight="560" ResizeMode="NoResize">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="74*"/>
-            <RowDefinition Height="45*"/>
-        </Grid.RowDefinitions>
 
         <Label Content="Vaccine Availability Notification Tool" Height="33" HorizontalAlignment="Left" Margin="286,10,0,0" Name="label5" VerticalAlignment="Top" Width="301" FontFamily="Siemens Sans" FontSize="16" />
-        <TextBlock HorizontalAlignment="Left" Margin="313,71,0,0" TextWrapping="Wrap" Text="Select State" VerticalAlignment="Top" Height="16" Width="70"/>
-        <TextBlock HorizontalAlignment="Left" Margin="311,109,0,0" TextWrapping="Wrap" Text="Select District" VerticalAlignment="Top" Height="16" Width="72"/>
-        <ComboBox x:Name="stCombo" HorizontalAlignment="Left" Margin="423,71,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="stCombo_SelectionChanged" Height="22"/>
-        <ComboBox x:Name="disCombo" HorizontalAlignment="Left" Margin="423,109,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
-        <Ellipse x:Name="_18ind" Fill="Red" HorizontalAlignment="Left" Height="121" Margin="52,326,0,0" Stroke="Black" VerticalAlignment="Top" Width="118" RenderTransformOrigin="0.476,-0.1" Grid.RowSpan="2"/>
-        <Ellipse x:Name="_45ind" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="58,78,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483" Grid.Row="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="58,347,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="67" Width="150" FontSize="24"><Run Text="    18 +"/><LineBreak/><Run Text=" Available"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="69,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="98" Width="131" Grid.Row="1" FontSize="24"><Run Text="    45+ "/><Run Text="Available"/></TextBlock>
-        <TextBlock HorizontalAlignment="Left" Margin="423,270,0,0" TextWrapping="Wrap" Text="Available at - " VerticalAlignment="Top" Height="16" Width="72"/>
-        <DataGrid x:Name="dg18" HorizontalAlignment="Left" Height="165" Margin="235,313,0,0" VerticalAlignment="Top" Width="658" Grid.RowSpan="2"/>
-        <DataGrid x:Name="dg45"  HorizontalAlignment="Left" Height="168" Margin="235,62,0,0" VerticalAlignment="Top" Width="658" Grid.Row="1"/>
-        <CheckBox x:Name="MonitorChkBox" Content="Monitor" HorizontalAlignment="Left" Margin="423,172,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
+        <TextBlock HorizontalAlignment="Left" Margin="47,93,0,0" TextWrapping="Wrap" Text="Select State" VerticalAlignment="Top" Height="16" Width="70"/>
+        <TextBlock HorizontalAlignment="Left" Margin="45,131,0,0" TextWrapping="Wrap" Text="Select District" VerticalAlignment="Top" Height="16" Width="72"/>
+        <ComboBox x:Name="stCombo" HorizontalAlignment="Left" Margin="157,93,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="stCombo_SelectionChanged" Height="22"/>
+        <ComboBox x:Name="disCombo" HorizontalAlignment="Left" Margin="157,131,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+        <Ellipse x:Name="_18ind" Fill="Red" HorizontalAlignment="Left" Height="121" Margin="394,88,0,0" Stroke="Black" VerticalAlignment="Top" Width="118" RenderTransformOrigin="0.476,-0.1"/>
+        <Ellipse x:Name="_45ind" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="394,244,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
+        <TextBlock HorizontalAlignment="Left" Margin="400,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="67" Width="150" FontSize="24"><Run Text="    18+"/><LineBreak/><Run Text=" Available"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="405,266,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="98" Width="131" FontSize="24"><Run Text="    45+ "/><Run Text="Available"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="719,52,0,0" TextWrapping="Wrap" Text="Available at - " VerticalAlignment="Top" Height="16" Width="72"/>
+        <DataGrid x:Name="dg18" HorizontalAlignment="Left" Height="134" Margin="523,75,0,0" VerticalAlignment="Top" Width="658"/>
+        <DataGrid x:Name="dg45"  HorizontalAlignment="Left" Height="132" Margin="523,232,0,0" VerticalAlignment="Top" Width="658"/>
+        <CheckBox x:Name="MonitorChkBox" Content="Monitor" HorizontalAlignment="Left" Margin="157,194,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
+        <DataGrid x:Name="dgArmy"  HorizontalAlignment="Left" Height="138" Margin="523,383,0,0" VerticalAlignment="Top" Width="658"/>
+        <Ellipse x:Name="_armyind" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="393,396,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
+        <TextBlock HorizontalAlignment="Left" Margin="423,423,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="98" Width="131" FontSize="24"><Run Text="Only"/><LineBreak/><Run Text="Army"/></TextBlock>
     </Grid>
 </Window>

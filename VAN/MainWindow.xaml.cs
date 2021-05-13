@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using VAN.Common;
 using VAN.Model;
 
 namespace VAN
@@ -42,7 +43,7 @@ namespace VAN
         [DllImport("kernel32.dll", EntryPoint = "Beep", SetLastError = true, ExactSpelling = true)]
         public static extern bool Beep(uint frequency, uint duration);
 
-       
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -94,6 +95,8 @@ namespace VAN
         {
             dg18.ItemsSource = null;
             dg45.ItemsSource = null;
+            dgArmy.ItemsSource = null;
+            dgArmy.Items.Clear();
             dg18.Items.Clear();
             dg45.Items.Clear();
             DateTime dtCurrent = DateTime.Now;
@@ -105,6 +108,7 @@ namespace VAN
             Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
             List<Session> listSession18 = new List<Session>();
             List<Session> listSession45 = new List<Session>();
+            List<Session> listSessionArmy = new List<Session>();
             for (int i = 0; i < 2; i++)
             {
                 dtCurrent = dtCurrent.AddDays(i);
@@ -120,13 +124,22 @@ namespace VAN
                 RootSession x = JsonConvert.DeserializeObject<RootSession>(response.Content);
                 foreach (var session in x.Sessions)
                 {
-                    if (session.min_age_limit == 18)
+                    Logger.WriteLog(System.DateTime.Now.ToString() + ":" + session.date + ":" + session.name + ":" + session.pincode + ":" + session.vaccine + ":" + session.min_age_limit + ":" + session.available_capacity);
+
+                    if (session.name.IndexOf("only armed forces", StringComparison.CurrentCultureIgnoreCase) >= 0)
                     {
-                        listSession18.Add(session);
+                        listSessionArmy.Add(session);
                     }
                     else
                     {
-                        listSession45.Add(session);
+                        if (session.min_age_limit == 18)
+                        {
+                            listSession18.Add(session);
+                        }
+                        else
+                        {
+                            listSession45.Add(session);
+                        }
                     }
                 }
             }
@@ -136,23 +149,26 @@ namespace VAN
                 dg18.ItemsSource = listSession18;
                 _18ind.Fill = new SolidColorBrush(Colors.ForestGreen);
                 Beep(5000, 1000);
-                Thread.Sleep(100);
+                Thread.Sleep(50);
                 Beep(5000, 1000);
-                Thread.Sleep(100);
+                Thread.Sleep(50);
                 Beep(5000, 1000);
-                Thread.Sleep(100);
             }
-           
+            if (listSessionArmy.Count > 0)
+            {
+                dgArmy.ItemsSource = listSessionArmy;
+                _armyind.Fill = new SolidColorBrush(Colors.ForestGreen);
+            }
+
             if (listSession45.Count > 0)
             {
                 dg45.ItemsSource = listSession45;
 
                 _45ind.Fill = new SolidColorBrush(Colors.ForestGreen);
 
-                if (text.Contains("Only Armed"))
-                {
-                    _45ind.Fill = new SolidColorBrush(Colors.Orange);                    
-                }
+                Beep(8000, 1000);
+                Thread.Sleep(50);
+                Beep(8000, 1000);
             }
             if (text.StartsWith("<!DOCTYPE"))
             {
