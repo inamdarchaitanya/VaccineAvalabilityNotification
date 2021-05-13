@@ -184,14 +184,16 @@ namespace VAN
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if ((bool)MonitorChkBox.IsChecked)
-            {
-                dispatcherTimer.Start();
-            }
-            else
-            {
-                dispatcherTimer.Stop();
-            }
+            dispatcherTimer.Start();
+            disCombo.IsEnabled = false;
+            stCombo.IsEnabled = false;
+        }
+
+        private void MonitorChkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            dispatcherTimer.Stop();
+            disCombo.IsEnabled = true;
+            stCombo.IsEnabled = true;
         }
     }
 }

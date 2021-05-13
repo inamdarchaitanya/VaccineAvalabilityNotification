@@ -20,7 +20,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="719,52,0,0" TextWrapping="Wrap" Text="Available at - " VerticalAlignment="Top" Height="16" Width="72"/>
         <DataGrid x:Name="dg18" HorizontalAlignment="Left" Height="134" Margin="523,75,0,0" VerticalAlignment="Top" Width="658"/>
         <DataGrid x:Name="dg45"  HorizontalAlignment="Left" Height="132" Margin="523,232,0,0" VerticalAlignment="Top" Width="658"/>
-        <CheckBox x:Name="MonitorChkBox" Content="Monitor" HorizontalAlignment="Left" Margin="157,194,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked"/>
+        <CheckBox x:Name="MonitorChkBox" Content="Monitor" HorizontalAlignment="Left" Margin="157,194,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked" Unchecked="MonitorChkBox_Unchecked"/>
         <DataGrid x:Name="dgArmy"  HorizontalAlignment="Left" Height="138" Margin="523,383,0,0" VerticalAlignment="Top" Width="658"/>
         <Ellipse x:Name="_armyind" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="393,396,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
         <TextBlock HorizontalAlignment="Left" Margin="423,423,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="98" Width="131" FontSize="24"><Run Text="Only"/><LineBreak/><Run Text="Army"/></TextBlock>
