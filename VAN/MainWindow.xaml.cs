@@ -128,8 +128,10 @@ namespace VAN
                 RootSession x = JsonConvert.DeserializeObject<RootSession>(response.Content);
                 foreach (var session in x.Sessions)
                 {
-                    Logger.WriteLog(System.DateTime.Now.ToString() + ":" + session.date + ":" + session.name + ":" + session.pincode + ":" + session.vaccine + ":" + session.min_age_limit + ":" + session.available_capacity);
-
+                    if ((bool)Log_chkBox.IsChecked)
+                    {
+                        Logger.WriteLog(System.DateTime.Now.ToString() + ":" + session.date + ":" + session.name + ":" + session.pincode + ":" + session.vaccine + ":" + session.min_age_limit + ":" + session.available_capacity);
+                    }
                     if (session.name.IndexOf("only", StringComparison.CurrentCultureIgnoreCase) >= 0 && session.available_capacity > 0)
                     {
                         listSessionArmy.Add(session);

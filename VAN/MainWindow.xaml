@@ -36,5 +36,6 @@
         <TextBlock HorizontalAlignment="Left" Margin="537,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="107" FontSize="24" Text="Dose 2"/>
         <TextBlock HorizontalAlignment="Left" Margin="414,440,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="107" FontSize="24" Text="Dose 1"/>
         <TextBlock HorizontalAlignment="Left" Margin="537,440,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="31" Width="107" FontSize="24" Text="Dose 2"/>
+        <CheckBox x:Name="Log_chkBox" Content="Enable Log" HorizontalAlignment="Left" Margin="20,526,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
