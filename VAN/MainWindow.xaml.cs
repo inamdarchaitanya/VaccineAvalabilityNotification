@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -35,9 +36,8 @@ namespace VAN
             InitializeComponent();
             //  DispatcherTimer setup
             dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 10);
-
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);           
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 10);  
         }
 
         [DllImport("kernel32.dll", EntryPoint = "Beep", SetLastError = true, ExactSpelling = true)]
@@ -102,8 +102,12 @@ namespace VAN
             DateTime dtCurrent = DateTime.Now;
             string text = string.Empty;
 
-            _18ind.Fill = new SolidColorBrush(Colors.Red);
-            _45ind.Fill = new SolidColorBrush(Colors.Red);
+            _18ind_1.Fill = new SolidColorBrush(Colors.Red);
+            _45ind_1.Fill = new SolidColorBrush(Colors.Red);
+            _18ind_2.Fill = new SolidColorBrush(Colors.Red);
+            _45ind_2.Fill = new SolidColorBrush(Colors.Red);
+            _armyind_1.Fill = new SolidColorBrush(Colors.Red);
+            _armyind_2.Fill = new SolidColorBrush(Colors.Red);
 
             Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
             List<Session> listSession18 = new List<Session>();
@@ -126,14 +130,14 @@ namespace VAN
                 {
                     Logger.WriteLog(System.DateTime.Now.ToString() + ":" + session.date + ":" + session.name + ":" + session.pincode + ":" + session.vaccine + ":" + session.min_age_limit + ":" + session.available_capacity);
 
-                    if (session.name.IndexOf("only armed forces", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                    if (session.name.IndexOf("only", StringComparison.CurrentCultureIgnoreCase) >= 0 && session.available_capacity > 0)
                     {
                         listSessionArmy.Add(session);
                     }
-                    else
+                    else if (session.available_capacity > 0)
                     {
                         if (session.min_age_limit == 18)
-                        {
+                        {                            
                             listSession18.Add(session);
                         }
                         else
@@ -146,40 +150,99 @@ namespace VAN
 
             if (listSession18.Count > 0)
             {
+                var cols = GetIndicatorColors(listSession18);
                 dg18.ItemsSource = listSession18;
-                _18ind.Fill = new SolidColorBrush(Colors.ForestGreen);
-                Beep(5000, 1000);
-                Thread.Sleep(50);
-                Beep(5000, 1000);
-                Thread.Sleep(50);
-                Beep(5000, 1000);
+                _18ind_1.Fill = cols[0];
+                _18ind_2.Fill = cols[1];
+                Alarm(5000, 500, 3, 50);
             }
             if (listSessionArmy.Count > 0)
             {
                 dgArmy.ItemsSource = listSessionArmy;
-                _armyind.Fill = new SolidColorBrush(Colors.ForestGreen);
+                var cols = GetIndicatorColors(listSessionArmy);
+                _armyind_1.Fill = cols[0];
+                _armyind_2.Fill = cols[1];
             }
 
             if (listSession45.Count > 0)
             {
                 dg45.ItemsSource = listSession45;
+                var cols = GetIndicatorColors(listSession45);
+                _45ind_1.Fill = cols[0];
+                _45ind_2.Fill = cols[1];
 
-                _45ind.Fill = new SolidColorBrush(Colors.ForestGreen);
-
-                Beep(8000, 1000);
-                Thread.Sleep(50);
-                Beep(8000, 1000);
+                Alarm(8000, 1000, 2, 50);             
             }
             if (text.StartsWith("<!DOCTYPE"))
             {
-                //Error too many requests sent.
-                Beep(2500, 3000);
-                Thread.Sleep(100);
+                Alarm(2500, 3000, 1, 0);
+                //Error too many requests sent.               
             }
 
-            Beep(1000, 500);
-            Thread.Sleep(50);
+            Alarm(1000, 500, 1, 0);
+            
+            pg1.Value = 0;
+            pg1.IsIndeterminate = false;
+            pg1.Orientation = Orientation.Horizontal;
+           
+            Duration duration = new Duration(TimeSpan.FromSeconds(10));
+            int dur = 0;
+            if (pg1.Value == 0)
+            {
+                dur = 10;
+            }            
 
+            DoubleAnimation doubleanimation = new DoubleAnimation(dur, duration);
+            pg1.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
+
+        }
+
+        private static void Alarm(uint freq, uint duration, uint repeat,int gap)
+        {
+            for (int i = 0; i < repeat; i++)
+            {
+                System.Threading.Thread thread = new System.Threading.Thread(
+        new System.Threading.ThreadStart(
+            delegate ()
+            {
+                Beep(freq, duration);
+                Thread.Sleep(gap);
+            }
+        ));
+
+                thread.Start();
+            }
+        }
+
+            private static List<SolidColorBrush> GetIndicatorColors( List<Session> sessions)
+        {
+            List<SolidColorBrush> colors = new List<SolidColorBrush>();
+           var x = from session in sessions
+                    where session.available_capacity_dose1 > 0
+                    select session;
+
+            if (x.Any())
+            {
+                colors.Add(new SolidColorBrush(Colors.ForestGreen));
+            }
+            else
+            {
+                colors.Add(new SolidColorBrush(Colors.Red));
+            }
+
+            var y = from session in sessions
+                    where session.available_capacity_dose2 > 0
+                    select session;
+
+            if (y.Any())
+            {
+                colors.Add(new SolidColorBrush(Colors.ForestGreen));
+            }
+            else
+            {
+                colors.Add(new SolidColorBrush(Colors.Red));
+            }
+            return colors;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -187,6 +250,15 @@ namespace VAN
             dispatcherTimer.Start();
             disCombo.IsEnabled = false;
             stCombo.IsEnabled = false;
+
+            pg1.IsIndeterminate = false;
+            pg1.Orientation = Orientation.Horizontal;
+           
+            Duration duration = new Duration(TimeSpan.FromSeconds(10));
+            DoubleAnimation doubleanimation = new DoubleAnimation(10, duration);
+            pg1.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
+            
+
         }
 
         private void MonitorChkBox_Unchecked(object sender, RoutedEventArgs e)
@@ -194,6 +266,7 @@ namespace VAN
             dispatcherTimer.Stop();
             disCombo.IsEnabled = true;
             stCombo.IsEnabled = true;
+            pg1.Value = 0;
         }
     }
 }
