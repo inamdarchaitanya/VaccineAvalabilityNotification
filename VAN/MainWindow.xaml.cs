@@ -95,8 +95,8 @@ namespace VAN
         {
             dg18.ItemsSource = null;
             dg45.ItemsSource = null;
-            dgArmy.ItemsSource = null;
-            dgArmy.Items.Clear();
+            dgRes.ItemsSource = null;
+            dgRes.Items.Clear();
             dg18.Items.Clear();
             dg45.Items.Clear();
             DateTime dtCurrent = DateTime.Now;
@@ -106,8 +106,8 @@ namespace VAN
             _45ind_1.Fill = new SolidColorBrush(Colors.Red);
             _18ind_2.Fill = new SolidColorBrush(Colors.Red);
             _45ind_2.Fill = new SolidColorBrush(Colors.Red);
-            _armyind_1.Fill = new SolidColorBrush(Colors.Red);
-            _armyind_2.Fill = new SolidColorBrush(Colors.Red);
+            _resind_1.Fill = new SolidColorBrush(Colors.Red);
+            _resind_2.Fill = new SolidColorBrush(Colors.Red);
 
             Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
             List<Session> listSession18 = new List<Session>();
@@ -156,14 +156,17 @@ namespace VAN
                 dg18.ItemsSource = listSession18;
                 _18ind_1.Fill = cols[0];
                 _18ind_2.Fill = cols[1];
-                Alarm(5000, 500, 3, 50);
+
+                BuzzAlarm(listSession18,rb18d1,rb18d2);   
             }
             if (listSessionArmy.Count > 0)
             {
-                dgArmy.ItemsSource = listSessionArmy;
+                dgRes.ItemsSource = listSessionArmy;
                 var cols = GetIndicatorColors(listSessionArmy);
-                _armyind_1.Fill = cols[0];
-                _armyind_2.Fill = cols[1];
+                _resind_1.Fill = cols[0];
+                _resind_2.Fill = cols[1];
+
+                BuzzAlarm(listSessionArmy, rbresd1, rbresd2);
             }
 
             if (listSession45.Count > 0)
@@ -173,7 +176,7 @@ namespace VAN
                 _45ind_1.Fill = cols[0];
                 _45ind_2.Fill = cols[1];
 
-                Alarm(8000, 1000, 2, 50);             
+                BuzzAlarm(listSession45, rb45d1, rb45d2);
             }
             if (text.StartsWith("<!DOCTYPE"))
             {
@@ -197,6 +200,27 @@ namespace VAN
             DoubleAnimation doubleanimation = new DoubleAnimation(dur, duration);
             pg1.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
 
+        }
+
+        private void BuzzAlarm(List<Session> sessions, RadioButton rb1, RadioButton rb2)
+        {
+            var x = from session in sessions
+                    where session.available_capacity_dose1 > 0
+                    select session;
+
+            if (x.Any() && (bool)rb1.IsChecked)
+            {
+                Alarm(5000, 500, 3, 50);
+            }
+
+            var y = from session in sessions
+                    where session.available_capacity_dose2 > 0
+                    select session;
+
+            if (y.Any() && (bool)rb2.IsChecked)
+            {
+                Alarm(5000, 500, 3, 50);
+            }
         }
 
         private static void Alarm(uint freq, uint duration, uint repeat,int gap)
