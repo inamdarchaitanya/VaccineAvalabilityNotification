@@ -30,14 +30,21 @@ namespace VAN
     {
         DispatcherTimer dispatcherTimer;
 
+        List<Session> listSession18d1;
+        List<Session> listSession45d1;
+        List<Session> listSessionArmyd1;
+
+        List<Session> listSession18d2;
+        List<Session> listSession45d2;
+        List<Session> listSessionArmyd2;
 
         public MainWindow()
         {
             InitializeComponent();
             //  DispatcherTimer setup
             dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);           
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 10);  
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 10);
         }
 
         [DllImport("kernel32.dll", EntryPoint = "Beep", SetLastError = true, ExactSpelling = true)]
@@ -107,6 +114,15 @@ namespace VAN
             dg18d2.Items.Clear();
             dg45d2.Items.Clear();
 
+            listSession18d1 = new List<Session>();
+            listSession45d1 = new List<Session>();
+            listSessionArmyd1 = new List<Session>();
+
+            listSession18d2 = new List<Session>();
+            listSession45d2 = new List<Session>();
+            listSessionArmyd2 = new List<Session>();
+
+
             DateTime dtCurrent = DateTime.Now;
             string text = string.Empty;
 
@@ -118,13 +134,7 @@ namespace VAN
             _resind_2.Fill = new SolidColorBrush(Colors.Red);
 
             Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
-            List<Session> listSession18d1 = new List<Session>();
-            List<Session> listSession45d1 = new List<Session>();
-            List<Session> listSessionArmyd1 = new List<Session>();
 
-            List<Session> listSession18d2 = new List<Session>();
-            List<Session> listSession45d2 = new List<Session>();
-            List<Session> listSessionArmyd2 = new List<Session>();
 
             for (int i = 0; i < 2; i++)
             {
@@ -185,64 +195,46 @@ namespace VAN
             }
 
             if (listSession18d1.Count > 0)
-            {
-                var cols = GetIndicatorColors(listSession18d1);
+            {              
                 dg18d1.ItemsSource = listSession18d1;
-                _18ind_1.Fill = cols[0];
-                _18ind_2.Fill = cols[1];
-
-                BuzzAlarm(listSession18d1,rb18d1,rb18d2);   
+                _18ind_1.Fill = new SolidColorBrush(Colors.ForestGreen);   
+                BuzzAlarm(listSession18d1, rb18d1);
             }
 
             if (listSession18d2.Count > 0)
-            {
-                var cols = GetIndicatorColors(listSession18d2);
+            {               
                 dg18d2.ItemsSource = listSession18d2;
-                _18ind_1.Fill = cols[0];
-                _18ind_2.Fill = cols[1];
-
-                BuzzAlarm(listSession18d2, rb18d1, rb18d2);
+                _18ind_2.Fill = new SolidColorBrush(Colors.ForestGreen);
+                BuzzAlarm(listSession18d2, rb18d2);
             }
 
             if (listSessionArmyd1.Count > 0)
             {
-                dgResd1.ItemsSource = listSessionArmyd1;
-                var cols = GetIndicatorColors(listSessionArmyd1);
-                _resind_1.Fill = cols[0];
-                _resind_2.Fill = cols[1];
-
-                BuzzAlarm(listSessionArmyd1, rbresd1, rbresd2);
+                dgResd1.ItemsSource = listSessionArmyd1;               
+                _resind_1.Fill = new SolidColorBrush(Colors.ForestGreen);   
+                BuzzAlarm(listSessionArmyd1, rbresd1);
             }
 
             if (listSessionArmyd2.Count > 0)
             {
                 dgResd2.ItemsSource = listSessionArmyd2;
-                var cols = GetIndicatorColors(listSessionArmyd2);
-                _resind_1.Fill = cols[0];
-                _resind_2.Fill = cols[1];
-
-                BuzzAlarm(listSessionArmyd2, rbresd1, rbresd2);
+                _resind_2.Fill = new SolidColorBrush(Colors.ForestGreen);
+                BuzzAlarm(listSessionArmyd2, rbresd2);
             }
 
 
             if (listSession45d1.Count > 0)
             {
                 dg45d1.ItemsSource = listSession45d1;
-                var cols = GetIndicatorColors(listSession45d1);
-                _45ind_1.Fill = cols[0];
-                _45ind_2.Fill = cols[1];
-
-                BuzzAlarm(listSession45d1, rb45d1, rb45d2);
+                _45ind_1.Fill = new SolidColorBrush(Colors.ForestGreen);
+                BuzzAlarm(listSession45d1, rb45d1);
             }
 
             if (listSession45d2.Count > 0)
             {
                 dg45d2.ItemsSource = listSession45d2;
-                var cols = GetIndicatorColors(listSession45d2);
-                _45ind_1.Fill = cols[0];
-                _45ind_2.Fill = cols[1];
-
-                BuzzAlarm(listSession45d2, rb45d1, rb45d2);
+                _45ind_2.Fill = new SolidColorBrush(Colors.ForestGreen);
+                BuzzAlarm(listSession45d2, rb45d2);
             }
 
             if (text.StartsWith("<!DOCTYPE"))
@@ -252,45 +244,30 @@ namespace VAN
             }
 
             Alarm(1000, 500, 1, 0);
-            
+
             pg1.Value = 0;
             pg1.IsIndeterminate = false;
             pg1.Orientation = Orientation.Horizontal;
-           
+
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
             int dur = 0;
             if (pg1.Value == 0)
             {
                 dur = 10;
-            }            
+            }
 
             DoubleAnimation doubleanimation = new DoubleAnimation(dur, duration);
             pg1.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
 
         }
 
-        private void BuzzAlarm(List<Session> sessions, RadioButton rb1, RadioButton rb2)
-        {
-            var x = from session in sessions
-                    where session.available_capacity_dose1 > 0
-                    select session;
-
-            if (x.Any() && (bool)rb1.IsChecked)
-            {
-                Alarm(5000, 500, 3, 50);
-            }
-
-            var y = from session in sessions
-                    where session.available_capacity_dose2 > 0
-                    select session;
-
-            if (y.Any() && (bool)rb2.IsChecked)
-            {
-                Alarm(5000, 500, 3, 50);
-            }
+        private void BuzzAlarm(List<Session> sessions, RadioButton rb)
+        {        
+            if ((bool)rb.IsChecked)
+                Alarm(5000, 500, 3, 50);           
         }
 
-        private static void Alarm(uint freq, uint duration, uint repeat,int gap)
+        private static void Alarm(uint freq, uint duration, uint repeat, int gap)
         {
             for (int i = 0; i < repeat; i++)
             {
@@ -307,37 +284,6 @@ namespace VAN
             }
         }
 
-            private static List<SolidColorBrush> GetIndicatorColors( List<Session> sessions)
-        {
-            List<SolidColorBrush> colors = new List<SolidColorBrush>();
-           var x = from session in sessions
-                    where session.available_capacity_dose1 > 0
-                    select session;
-
-            if (x.Any())
-            {
-                colors.Add(new SolidColorBrush(Colors.ForestGreen));
-            }
-            else
-            {
-                colors.Add(new SolidColorBrush(Colors.Red));
-            }
-
-            var y = from session in sessions
-                    where session.available_capacity_dose2 > 0
-                    select session;
-
-            if (y.Any())
-            {
-                colors.Add(new SolidColorBrush(Colors.ForestGreen));
-            }
-            else
-            {
-                colors.Add(new SolidColorBrush(Colors.Red));
-            }
-            return colors;
-        }
-
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             dispatcherTimer.Start();
@@ -346,11 +292,11 @@ namespace VAN
 
             pg1.IsIndeterminate = false;
             pg1.Orientation = Orientation.Horizontal;
-           
+
             Duration duration = new Duration(TimeSpan.FromSeconds(10));
             DoubleAnimation doubleanimation = new DoubleAnimation(10, duration);
             pg1.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
-            
+
 
         }
 
@@ -360,6 +306,49 @@ namespace VAN
             disCombo.IsEnabled = true;
             stCombo.IsEnabled = true;
             pg1.Value = 0;
+        }
+
+        private void Cb18d1_Click(object sender, RoutedEventArgs e)
+        {
+            var maxObject = listSession18d1.OrderByDescending(item => item.available_capacity_dose1).First();
+            SetPINInClipboard(maxObject);
+        }
+
+       
+
+        private void Cb18d2_Click(object sender, RoutedEventArgs e)
+        {
+            var maxObject = listSession18d2.OrderByDescending(item => item.available_capacity_dose2).First();
+            SetPINInClipboard(maxObject);
+        }
+
+        private void Cb45d1_Click(object sender, RoutedEventArgs e)
+        {
+            var maxObject = listSession45d1.OrderByDescending(item => item.available_capacity_dose1).First();
+            SetPINInClipboard(maxObject);
+        }
+
+        private void Cb45d2_Click(object sender, RoutedEventArgs e)
+        {
+            var maxObject = listSession45d2.OrderByDescending(item => item.available_capacity_dose2).First();
+            SetPINInClipboard(maxObject);
+        }
+
+        private void Cbresd1_Click(object sender, RoutedEventArgs e)
+        {
+            var maxObject = listSessionArmyd1.OrderByDescending(item => item.available_capacity_dose1).First();
+            SetPINInClipboard(maxObject);
+        }
+
+        private void Cbresd2_Click(object sender, RoutedEventArgs e)
+        {
+            var maxObject = listSessionArmyd2.OrderByDescending(item => item.available_capacity_dose2).First();
+            SetPINInClipboard(maxObject);
+        }
+
+        private void SetPINInClipboard(Session maxObject)
+        {
+            Clipboard.SetText(maxObject.pincode.ToString());
         }
     }
 }
