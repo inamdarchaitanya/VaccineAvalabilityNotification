@@ -45,6 +45,12 @@ namespace VAN
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 10);
+            DateTime dtCurrent = System.DateTime.Now;
+            if (dtCurrent.TimeOfDay.Hours > 13)
+            {
+                dtCurrent = dtCurrent.AddDays(1);
+            }
+            dtpckr.SelectedDate = dtCurrent;
         }
 
         [DllImport("kernel32.dll", EntryPoint = "Beep", SetLastError = true, ExactSpelling = true)]
@@ -123,7 +129,8 @@ namespace VAN
             listSessionArmyd2 = new List<Session>();
 
 
-            DateTime dtCurrent = DateTime.Now;
+            DateTime dtCurrent = (DateTime)dtpckr.SelectedDate;
+           
             string text = string.Empty;
 
             _18ind_1.Fill = new SolidColorBrush(Colors.Red);
@@ -136,7 +143,7 @@ namespace VAN
             Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
 
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < int.Parse(((System.Windows.Controls.ContentControl)cmbdays.SelectedValue).Content.ToString()); i++)
             {
                 dtCurrent = dtCurrent.AddDays(i);
 
