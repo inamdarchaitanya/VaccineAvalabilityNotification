@@ -286,17 +286,19 @@ namespace VAN
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            dispatcherTimer.Start();
-            disCombo.IsEnabled = false;
-            stCombo.IsEnabled = false;
+            if (stCombo.SelectedItem != null && disCombo.SelectedItem != null)
+            {
+                dispatcherTimer.Start();
+                disCombo.IsEnabled = false;
+                stCombo.IsEnabled = false;
 
-            pg1.IsIndeterminate = false;
-            pg1.Orientation = Orientation.Horizontal;
+                pg1.IsIndeterminate = false;
+                pg1.Orientation = Orientation.Horizontal;
 
-            Duration duration = new Duration(TimeSpan.FromSeconds(10));
-            DoubleAnimation doubleanimation = new DoubleAnimation(10, duration);
-            pg1.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
-
+                Duration duration = new Duration(TimeSpan.FromSeconds(10));
+                DoubleAnimation doubleanimation = new DoubleAnimation(10, duration);
+                pg1.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
+            }
 
         }
 
