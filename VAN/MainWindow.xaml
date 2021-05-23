@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VAN"
         mc:Ignorable="d"
-        Title="Vaccine Availability Notification" Height="588.224" Width="1408" Loaded="Window_Loaded" MinWidth="485" MinHeight="560" ResizeMode="NoResize">
+        Title="Vaccine Availability Notification" Height="1068.224" Width="1408" Loaded="Window_Loaded" MinWidth="485" MinHeight="560" ResizeMode="NoResize">
     <Grid Background="#FFDEDEDE">
 
-        <GroupBox Header="" HorizontalAlignment="Left" Height="470" Margin="20,65,0,0" VerticalAlignment="Top" Width="280" Background="#FFF0F0F0"/>
+        <GroupBox Header="" HorizontalAlignment="Left" Height="944" Margin="20,65,0,0" VerticalAlignment="Top" Width="280" Background="#FFF0F0F0"/>
 
-        <GroupBox Header="Reserved" HorizontalAlignment="Left" Height="160" Margin="318,375,0,0" VerticalAlignment="Top" Width="1060" Background="White" FontWeight="Bold" FontSize="14"/>
+        <GroupBox Header="Reserved" HorizontalAlignment="Left" Height="310" Margin="318,697,0,0" VerticalAlignment="Top" Width="1060" Background="White" FontWeight="Bold" FontSize="14"/>
 
-        <GroupBox Header="45 +" HorizontalAlignment="Left" Height="160" Margin="319,220,0,0" VerticalAlignment="Top" Width="1059" Background="White" FontWeight="Bold" FontSize="14"/>
+        <GroupBox Header="45 +" HorizontalAlignment="Left" Height="310" Margin="319,380,0,0" VerticalAlignment="Top" Width="1059" Background="White" FontWeight="Bold" FontSize="14"/>
 
-        <GroupBox Header="18 +" HorizontalAlignment="Left" Height="160" Margin="318,65,0,0" VerticalAlignment="Top" Width="1060" Background="White" FontWeight="Bold" FontSize="14"/>
+        <GroupBox Header="18 +" HorizontalAlignment="Left" Height="310" Margin="318,65,0,0" VerticalAlignment="Top" Width="1060" Background="White" FontWeight="Bold" FontSize="14"/>
 
         <Label Content="Vaccine Availability Notification Tool" Height="33" HorizontalAlignment="Left" Margin="532,10,0,0" x:Name="label5" VerticalAlignment="Top" Width="300" FontFamily="Siemens Sans" FontSize="16" FontWeight="Bold" />
         <TextBlock HorizontalAlignment="Left" Margin="47,93,0,0" TextWrapping="Wrap" Text="Select State" VerticalAlignment="Top" Height="16" Width="70" FontWeight="Bold"/>
@@ -22,25 +22,28 @@
         <ComboBox x:Name="stCombo" HorizontalAlignment="Left" Margin="157,93,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="stCombo_SelectionChanged" Height="22"/>
         <ComboBox x:Name="disCombo" HorizontalAlignment="Left" Margin="157,131,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
         <Ellipse x:Name="_18ind_1" Fill="Red" HorizontalAlignment="Left" Height="121" Margin="352,84,0,0" Stroke="Black" VerticalAlignment="Top" Width="118" RenderTransformOrigin="0.476,-0.1"/>
-        <Ellipse x:Name="_45ind_1" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="352,242,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
+        <Ellipse x:Name="_45ind_1" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="352,402,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
         <TextBlock HorizontalAlignment="Left" Margin="644,52,0,0" TextWrapping="Wrap" Text="Available at - " VerticalAlignment="Top" Height="16" Width="72" FontWeight="Bold"/>
-        <DataGrid x:Name="dg18" HorizontalAlignment="Left" Height="134" Margin="644,81,0,0" VerticalAlignment="Top" Width="717"/>
-        <DataGrid x:Name="dg45"  HorizontalAlignment="Left" Height="132" Margin="644,238,0,0" VerticalAlignment="Top" Width="717"/>
+        <DataGrid x:Name="dg18d1" HorizontalAlignment="Left" Height="134" Margin="479,81,0,0" VerticalAlignment="Top" Width="882"/>
+        <DataGrid x:Name="dg45d1"  HorizontalAlignment="Left" Height="132" Margin="479,402,0,0" VerticalAlignment="Top" Width="882"/>
         <CheckBox x:Name="MonitorChkBox" Content="Monitor" HorizontalAlignment="Left" Margin="120,193,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked" Unchecked="MonitorChkBox_Unchecked" FontWeight="Bold"/>
-        <DataGrid x:Name="dgRes"  HorizontalAlignment="Left" Height="138" Margin="644,391,0,0" VerticalAlignment="Top" Width="717"/>
-        <Ellipse x:Name="_resind_1" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="351,395,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
-        <ProgressBar x:Name = "pg1" Value = "0"  Margin = "34,238,1125,301" Maximum = "10" IsIndeterminate = "False" RenderTransformOrigin="0.258,2.136" SmallChange="1" />
-        <Ellipse x:Name="_18ind_2" Fill="Red" HorizontalAlignment="Left" Height="121" Margin="479,84,0,0" Stroke="Black" VerticalAlignment="Top" Width="118" RenderTransformOrigin="0.476,-0.1"/>
-        <Ellipse x:Name="_45ind_2" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="479,242,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
-        <Ellipse x:Name="_resind_2" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="479,395,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
-        <CheckBox x:Name="Log_chkBox" Content="Enable Log" HorizontalAlignment="Left" Margin="34,510,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <DataGrid x:Name="dgResd1"  HorizontalAlignment="Left" Height="138" Margin="479,713,0,0" VerticalAlignment="Top" Width="882"/>
+        <Ellipse x:Name="_resind_1" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="351,717,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
+        <ProgressBar x:Name = "pg1" Value = "0"  Margin = "34,238,1125,785" Maximum = "10" IsIndeterminate = "False" RenderTransformOrigin="0.258,2.136" SmallChange="1" />
+        <Ellipse x:Name="_18ind_2" Fill="Red" HorizontalAlignment="Left" Height="121" Margin="351,220,0,0" Stroke="Black" VerticalAlignment="Top" Width="118" RenderTransformOrigin="0.476,-0.1"/>
+        <Ellipse x:Name="_45ind_2" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="352,543,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
+        <Ellipse x:Name="_resind_2" Fill="Red" HorizontalAlignment="Left" Height="116" Margin="351,879,0,0" Stroke="Black" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.063,0.483"/>
+        <CheckBox x:Name="Log_chkBox" Content="Enable Log" HorizontalAlignment="Left" Margin="104,962,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <Label Content="inamdarchaitanya@gmail.com" Height="33" HorizontalAlignment="Left" Margin="1124,10,0,0" x:Name="label5_Copy" VerticalAlignment="Top" Width="254" FontFamily="Siemens Sans" FontSize="16" FontWeight="Bold" />
         <RadioButton x:Name="rb18d1" Content="Dose 1" HorizontalAlignment="Left" Margin="382,137,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.605,-3.633" Width="65" FontWeight="ExtraBold" Foreground="White"/>
-        <RadioButton x:Name="rb18d2" Content="Dose 2" HorizontalAlignment="Left" Margin="507,137,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" Foreground="White"/>
-        <RadioButton x:Name="rb45d1" Content="Dose 1" HorizontalAlignment="Left" Margin="382,292,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" Foreground="White"/>
-        <RadioButton x:Name="rb45d2" Content="Dose 2" HorizontalAlignment="Left" Margin="507,292,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.158,-4.133" FontWeight="ExtraBold" Foreground="White"/>
-        <RadioButton x:Name="rbresd1" Content="Dose 1" HorizontalAlignment="Left" Margin="382,446,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" Foreground="White"/>
-        <RadioButton x:Name="rbresd2" Content="Dose 2" HorizontalAlignment="Left" Margin="507,446,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.947,-6.133" FontWeight="ExtraBold" Foreground="White"/>
+        <RadioButton x:Name="rb18d2" Content="Dose 2" HorizontalAlignment="Left" Margin="379,273,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" Foreground="White"/>
+        <RadioButton x:Name="rb45d1" Content="Dose 1" HorizontalAlignment="Left" Margin="382,452,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" Foreground="White"/>
+        <RadioButton x:Name="rb45d2" Content="Dose 2" HorizontalAlignment="Left" Margin="380,593,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.158,-4.133" FontWeight="ExtraBold" Foreground="White"/>
+        <RadioButton x:Name="rbresd1" Content="Dose 1" HorizontalAlignment="Left" Margin="382,768,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" Foreground="White"/>
+        <RadioButton x:Name="rbresd2" Content="Dose 2" HorizontalAlignment="Left" Margin="379,930,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.947,-6.133" FontWeight="ExtraBold" Foreground="White"/>
         <TextBlock HorizontalAlignment="Left" Margin="449,49,0,0" TextWrapping="Wrap" Text="Select Alarm" VerticalAlignment="Top" Height="16" Width="72" FontWeight="Bold"/>
+        <DataGrid x:Name="dgResd2"  HorizontalAlignment="Left" Height="138" Margin="479,857,0,0" VerticalAlignment="Top" Width="882"/>
+        <DataGrid x:Name="dg45d2"  HorizontalAlignment="Left" Height="132" Margin="479,547,0,0" VerticalAlignment="Top" Width="882"/>
+        <DataGrid x:Name="dg18d2" HorizontalAlignment="Left" Height="134" Margin="479,228,0,0" VerticalAlignment="Top" Width="882"/>
     </Grid>
 </Window>

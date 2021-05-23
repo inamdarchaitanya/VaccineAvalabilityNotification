@@ -93,12 +93,20 @@ namespace VAN
 
         void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            dg18.ItemsSource = null;
-            dg45.ItemsSource = null;
-            dgRes.ItemsSource = null;
-            dgRes.Items.Clear();
-            dg18.Items.Clear();
-            dg45.Items.Clear();
+            dg18d1.ItemsSource = null;
+            dg45d1.ItemsSource = null;
+            dgResd1.ItemsSource = null;
+            dgResd1.Items.Clear();
+            dg18d1.Items.Clear();
+            dg45d1.Items.Clear();
+
+            dg18d2.ItemsSource = null;
+            dg45d2.ItemsSource = null;
+            dgResd2.ItemsSource = null;
+            dgResd2.Items.Clear();
+            dg18d2.Items.Clear();
+            dg45d2.Items.Clear();
+
             DateTime dtCurrent = DateTime.Now;
             string text = string.Empty;
 
@@ -110,9 +118,14 @@ namespace VAN
             _resind_2.Fill = new SolidColorBrush(Colors.Red);
 
             Dictionary<DateTime, string> centers = new Dictionary<DateTime, string>();
-            List<Session> listSession18 = new List<Session>();
-            List<Session> listSession45 = new List<Session>();
-            List<Session> listSessionArmy = new List<Session>();
+            List<Session> listSession18d1 = new List<Session>();
+            List<Session> listSession45d1 = new List<Session>();
+            List<Session> listSessionArmyd1 = new List<Session>();
+
+            List<Session> listSession18d2 = new List<Session>();
+            List<Session> listSession45d2 = new List<Session>();
+            List<Session> listSessionArmyd2 = new List<Session>();
+
             for (int i = 0; i < 2; i++)
             {
                 dtCurrent = dtCurrent.AddDays(i);
@@ -134,50 +147,104 @@ namespace VAN
                     }
                     if (session.name.IndexOf("only", StringComparison.CurrentCultureIgnoreCase) >= 0 && session.available_capacity > 0)
                     {
-                        listSessionArmy.Add(session);
+                        if (session.available_capacity_dose1 > 0)
+                        {
+                            listSessionArmyd1.Add(session);
+                        }
+                        else
+                        {
+                            listSessionArmyd2.Add(session);
+                        }
                     }
                     else if (session.available_capacity > 0)
                     {
                         if (session.min_age_limit == 18)
-                        {                            
-                            listSession18.Add(session);
+                        {
+                            if (session.available_capacity_dose1 > 0)
+                            {
+                                listSession18d1.Add(session);
+                            }
+                            else
+                            {
+                                listSession18d2.Add(session);
+                            }
                         }
                         else
                         {
-                            listSession45.Add(session);
+                            if (session.available_capacity_dose1 > 0)
+                            {
+                                listSession45d1.Add(session);
+                            }
+                            else
+                            {
+                                listSession45d2.Add(session);
+                            }
                         }
                     }
                 }
             }
 
-            if (listSession18.Count > 0)
+            if (listSession18d1.Count > 0)
             {
-                var cols = GetIndicatorColors(listSession18);
-                dg18.ItemsSource = listSession18;
+                var cols = GetIndicatorColors(listSession18d1);
+                dg18d1.ItemsSource = listSession18d1;
                 _18ind_1.Fill = cols[0];
                 _18ind_2.Fill = cols[1];
 
-                BuzzAlarm(listSession18,rb18d1,rb18d2);   
+                BuzzAlarm(listSession18d1,rb18d1,rb18d2);   
             }
-            if (listSessionArmy.Count > 0)
+
+            if (listSession18d2.Count > 0)
             {
-                dgRes.ItemsSource = listSessionArmy;
-                var cols = GetIndicatorColors(listSessionArmy);
+                var cols = GetIndicatorColors(listSession18d2);
+                dg18d2.ItemsSource = listSession18d2;
+                _18ind_1.Fill = cols[0];
+                _18ind_2.Fill = cols[1];
+
+                BuzzAlarm(listSession18d2, rb18d1, rb18d2);
+            }
+
+            if (listSessionArmyd1.Count > 0)
+            {
+                dgResd1.ItemsSource = listSessionArmyd1;
+                var cols = GetIndicatorColors(listSessionArmyd1);
                 _resind_1.Fill = cols[0];
                 _resind_2.Fill = cols[1];
 
-                BuzzAlarm(listSessionArmy, rbresd1, rbresd2);
+                BuzzAlarm(listSessionArmyd1, rbresd1, rbresd2);
             }
 
-            if (listSession45.Count > 0)
+            if (listSessionArmyd2.Count > 0)
             {
-                dg45.ItemsSource = listSession45;
-                var cols = GetIndicatorColors(listSession45);
+                dgResd2.ItemsSource = listSessionArmyd2;
+                var cols = GetIndicatorColors(listSessionArmyd2);
+                _resind_1.Fill = cols[0];
+                _resind_2.Fill = cols[1];
+
+                BuzzAlarm(listSessionArmyd2, rbresd1, rbresd2);
+            }
+
+
+            if (listSession45d1.Count > 0)
+            {
+                dg45d1.ItemsSource = listSession45d1;
+                var cols = GetIndicatorColors(listSession45d1);
                 _45ind_1.Fill = cols[0];
                 _45ind_2.Fill = cols[1];
 
-                BuzzAlarm(listSession45, rb45d1, rb45d2);
+                BuzzAlarm(listSession45d1, rb45d1, rb45d2);
             }
+
+            if (listSession45d2.Count > 0)
+            {
+                dg45d2.ItemsSource = listSession45d2;
+                var cols = GetIndicatorColors(listSession45d2);
+                _45ind_1.Fill = cols[0];
+                _45ind_2.Fill = cols[1];
+
+                BuzzAlarm(listSession45d2, rb45d1, rb45d2);
+            }
+
             if (text.StartsWith("<!DOCTYPE"))
             {
                 Alarm(2500, 3000, 1, 0);
